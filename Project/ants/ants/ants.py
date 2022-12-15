@@ -314,7 +314,6 @@ class NinjaAnt(Ant):
         # BEGIN Problem 7
         for bee in self.place.bees[:]:
             bee.reduce_armor(self.damage)
-        "*** YOUR CODE HERE ***"
         # END Problem 7
 
 # BEGIN Problem 8
@@ -337,13 +336,11 @@ class ContainerAnt(Ant):
     def can_contain(self, other):
         # BEGIN Problem 9
         return not isinstance(other, ContainerAnt) and self.contained_ant is None
-        "*** YOUR CODE HERE ***"
         # END Problem 9
 
     def contain_ant(self, ant):
         # BEGIN Problem 9
         self.contained_ant = ant
-        "*** YOUR CODE HERE ***"
         # END Problem 9
 
     def remove_ant(self, ant):
@@ -365,7 +362,6 @@ class ContainerAnt(Ant):
         # BEGIN Problem 9
         if self.contained_ant:
             self.contained_ant.action(gamestate)
-        "*** YOUR CODE HERE ***"
         # END Problem 9
 
 class BodyguardAnt(ContainerAnt):
@@ -530,7 +526,6 @@ class Bee(Insect):
             destination = self.place.entrance
             if destination is gamestate.beehive:
                 destination = self.place
-        "*** YOUR CODE HERE ***"
         # END EC
         if self.blocked():
             self.sting(self.place.ant)
@@ -559,7 +554,6 @@ def make_slow(action, bee):
         if gamestate.time % 2 == 0:
             action(gamestate)
     return slow_action
-    "*** YOUR CODE HERE ***"
     # END Problem EC
 
 def make_scare(action, bee):
@@ -573,7 +567,6 @@ def make_scare(action, bee):
         action(gamestate)
         bee.scared = False
     return scare_action
-    "*** YOUR CODE HERE ***"
     # END Problem EC
 
 def apply_status(status, bee, length):
@@ -590,7 +583,6 @@ def apply_status(status, bee, length):
             orig_action(gamestate)
         time += 1
     bee.action = applied
-    "*** YOUR CODE HERE ***"
     # END Problem EC
 
 
@@ -622,7 +614,6 @@ class ScaryThrower(ThrowerAnt):
         if target is not None and not target.has_been_scared:
             apply_status(make_scare, target, 2)
             target.has_been_scared = True
-        "*** YOUR CODE HERE ***"
         # END Problem EC
 
 class LaserAnt(ThrowerAnt):
