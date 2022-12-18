@@ -37,6 +37,8 @@ def scheme_eval(expr, env, _=None): # Optional third argument is ignored
         # BEGIN PROBLEM 4
         first = scheme_eval(first, env)
         validate_procedure(first)
+        if isinstance(first, MacroProcedure):
+            return scheme_eval(first.apply_macro(rest, env), env)
         rest = rest.map(lambda e: scheme_eval(e, env))
         return scheme_apply(first, rest, env)
         # END PROBLEM 4
@@ -304,7 +306,7 @@ def do_lambda_form(expressions, env):
     formals = expressions.first
     validate_formals(formals)
     # BEGIN PROBLEM 8
-    return LambdaProcedure(expressions.first, expressions.rest, env)
+    return LambdaProcedure(formals, expressions.rest, env)
     # END PROBLEM 8
 
 def do_if_form(expressions, env):
@@ -431,7 +433,17 @@ def do_define_macro(expressions, env):
     1
     """
     # BEGIN Problem 20
-    "*** YOUR CODE HERE ***"
+    validate_form(expressions, 2, 2)
+    validate_form(expressions.first, 1)
+    name = expressions.first.first
+    if not scheme_symbolp(name):
+        raise SchemeError('illegal macro name')
+    formals = expressions.first.rest
+    validate_formals(formals)
+    if not self_evaluating(expressions.rest):
+        validate_form(expressions.rest, 0)
+    env.define(name, MacroProcedure(formals, expressions.rest, env))
+    return name
     # END Problem 20
 
 

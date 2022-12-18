@@ -630,7 +630,7 @@ x
 ;;; Extra credit ;;;
 ;;;;;;;;;;;;;;;;;;;;
 
-(exit)
+; (exit)
 
 ; Tail call optimization tests
 
@@ -657,7 +657,7 @@ x
 (sum 1001 0)
 ; expect 501501
 
-(exit)
+; (exit)
 
 ; macro tests
 
