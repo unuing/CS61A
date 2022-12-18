@@ -76,7 +76,7 @@ def eval_all(expressions, env):
     while expressions.rest is not nil:
         scheme_eval(expressions.first, env)
         expressions = expressions.rest
-    return scheme_eval(expressions.first, env)
+    return scheme_eval(expressions.first, env, True)
     # END PROBLEM 7
 
 ################
@@ -318,9 +318,9 @@ def do_if_form(expressions, env):
     """
     validate_form(expressions, 2, 3)
     if is_true_primitive(scheme_eval(expressions.first, env)):
-        return scheme_eval(expressions.rest.first, env)
+        return scheme_eval(expressions.rest.first, env, True)
     elif len(expressions) == 3:
-        return scheme_eval(expressions.rest.rest.first, env)
+        return scheme_eval(expressions.rest.rest.first, env, True)
 
 def do_and_form(expressions, env):
     """Evaluate a (short-circuited) and form.
@@ -338,7 +338,7 @@ def do_and_form(expressions, env):
     # BEGIN PROBLEM 12
     result = True
     while expressions is not nil:
-        result = scheme_eval(expressions.first, env)
+        result = scheme_eval(expressions.first, env, True if expressions.rest is nil else False)
         if is_false_primitive(result):
             break
         expressions = expressions.rest
@@ -361,7 +361,7 @@ def do_or_form(expressions, env):
     # BEGIN PROBLEM 12
     result = False
     while expressions is not nil:
-        result = scheme_eval(expressions.first, env)
+        result = scheme_eval(expressions.first, env, True if expressions.rest is nil else False)
         if is_true_primitive(result):
             break
         expressions = expressions.rest
@@ -631,8 +631,9 @@ def optimize_tail_calls(prior_eval_function):
 
         result = Thunk(expr, env)
         # BEGIN
-        return prior_eval_function(result.expr, result.env)
-        "*** YOUR CODE HERE ***"
+        while isinstance(result, Thunk):
+            result = prior_eval_function(result.expr, result.env)
+        return result
         # END
     return optimized_eval
 
